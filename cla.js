@@ -250,7 +250,7 @@ async function registerCommands() {
 async function fetchPrayerData() {
   const now = new Date();
   const url = `https://api.aladhan.com/v1/timings/${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}` +
-    `?latitude=31.7767&longitude=35.2345&method=3`;
+    `?latitude=31.7767&longitude=35.2345&method=5&timezonestring=Asia%2FJerusalem&tune=0,0,0,0,0,5,0,0,0`;
 
   const { data } = await axios.get(url, { timeout: 10_000 });
   const t = data.data.timings;
