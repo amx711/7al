@@ -9,6 +9,7 @@ const {
   joinVoiceChannel,
   createAudioPlayer,
   createAudioResource,
+  StreamType,
   AudioPlayerStatus,
   VoiceConnectionStatus,
   entersState
@@ -17,7 +18,8 @@ const path = require('path');
 const axios = require('axios');
 const { generatePrayerImage } = require('./prayerImage');
 
-const ADHAN_FILE = path.join(__dirname, 'voice.mp3');
+// Pre-encoded Ogg/Opus so playback needs no ffmpeg on the host.
+const ADHAN_FILE = path.join(__dirname, 'voice.ogg');
 
 const TOKEN = process.env.DISCORD_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -89,7 +91,9 @@ function playAdhanInChannel(channel) {
     }
 
     const player = createAudioPlayer();
-    const resource = createAudioResource(ADHAN_FILE);
+    const resource = createAudioResource(ADHAN_FILE, {
+      inputType: StreamType.OggOpus
+    });
 
     player.on(AudioPlayerStatus.Idle, () => {
       console.log(`✅ Adhan done in #${channel.name} (${channel.guild.name})`);
