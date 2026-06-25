@@ -38,3 +38,5 @@ Make sure that the .env have the TOKEN & CLIENT_ID then,
 npm install
 node cla.js
 ```
+
+## For higher sound quality use the old one with the ffmpeg (.mp3)
