@@ -1,3 +1,6 @@
+// prayerImage.js - Pure JavaScript canvas image generator
+// Uses @napi-rs/canvas — no Python, no libraqm, no extra deps
+
 const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const path = require('path');
 const fs   = require('fs');
@@ -5,9 +8,7 @@ const fs   = require('fs');
 // ── Register font ─────────────────────────────────────────────────────────────
 function registerFonts() {
   const candidates = [
-    path.join(__dirname, 'Tajawal-Bold.ttf'),
-    path.join(__dirname, 'NotoNaskhArabic-Bold.ttf'),
-    path.join(__dirname, 'Amiri-Bold.ttf'),
+    path.join(__dirname, '/Assests/Tajawal-Bold.ttf'),
     'C:/Windows/Fonts/arabtype.ttf',
     'C:/Windows/Fonts/tahoma.ttf',
   ];
@@ -35,38 +36,38 @@ function drawTime(ctx, time, x, y) {
 // ── One function per prayer — tweak x, y freely ──────────────────────────────
 
 function drawFajr(ctx, time) {
-  const x = 1255;  
-  const y = 797;  
+  const x = 1255;  // ← change me
+  const y = 797;   // ← change me
   drawTime(ctx, time, x, y);
 }
 
 function drawDhuhr(ctx, time) {
-  const x = 1010;  
-  const y = 797;   
+  const x = 1010;  // ← change me
+  const y = 797;   // ← change me
   drawTime(ctx, time, x, y);
 }
 
 function drawAsr(ctx, time) {
-  const x = 760;  
-  const y = 797;  
+  const x = 760;   // ← change me
+  const y = 797;   // ← change me
   drawTime(ctx, time, x, y);
 }
 
 function drawMaghrib(ctx, time) {
-  const x = 510;  
-  const y = 797; 
+  const x = 510;   // ← change me
+  const y = 797;   // ← change me
   drawTime(ctx, time, x, y);
 }
 
 function drawIsha(ctx, time) {
-  const x = 275; 
-  const y = 797;
+  const x = 275;   // ← change me
+  const y = 797;   // ← change me
   drawTime(ctx, time, x, y);
 }
 
 function drawHijriDate(ctx, text) {
-  const x = 768;   
-  const y = 275; 
+  const x = 768;   // ← change me
+  const y = 275;   // ← change me
   ctx.save();
   ctx.font         = 'bold 22px ArabicFont, Arial';
   ctx.fillStyle    = '#ffffff';
@@ -81,18 +82,21 @@ function drawHijriDate(ctx, text) {
 async function generatePrayerImage({ fajr, dhuhr, asr, maghrib, isha, hijriText }) {
   registerFonts();
 
-  const bgImg  = await loadImage(path.join(__dirname, 'bg.png'));
+  const bgImg  = await loadImage(path.join(__dirname, '/Assests/bg.png'));
   const canvas = createCanvas(1536, 1024);
   const ctx    = canvas.getContext('2d');
 
+  // Draw background
   ctx.drawImage(bgImg, 0, 0, 1536, 1024);
 
+  // Draw each prayer time individually
   drawFajr   (ctx, fajr);
   drawDhuhr  (ctx, dhuhr);
   drawAsr    (ctx, asr);
   drawMaghrib(ctx, maghrib);
   drawIsha   (ctx, isha);
 
+  // Draw Hijri date
   drawHijriDate(ctx, hijriText);
 
   return canvas.toBuffer('image/png');
